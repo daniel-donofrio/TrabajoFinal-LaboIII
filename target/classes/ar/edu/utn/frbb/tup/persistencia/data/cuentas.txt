@@ -1,3 +1,0 @@
-CBU, Cliente, Tipo de cuenta, Moneda, Alias, Fecha de creacion, Saldo
-20127444,32563401,CAJA_AHORRO,PESOS,AhorroPesos,2024-08-01,0.0
-20865532,32563401,CAJA_AHORRO,DOLARES,AhorroPesos,2024-08-01,0.0

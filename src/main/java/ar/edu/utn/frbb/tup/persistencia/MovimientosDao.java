@@ -14,7 +14,7 @@ public class MovimientosDao extends BaseDao<Movimiento>{
     private final String RUTA_ARCHIVO = "src/main/java/ar/edu/utn/frbb/tup/persistencia/data/movimientos.txt";
 
     public void inicializarMovimientos(){
-        String encabezado = "CVU Origen, fecha Operacion, hora Operacion, tipo operacion, monto";
+        String encabezado = "CBU Origen, Fecha de operacion, Hora de operacion, Tipo de operacion, Monto";
         inicializarArchivo(encabezado, RUTA_ARCHIVO);
     }
 

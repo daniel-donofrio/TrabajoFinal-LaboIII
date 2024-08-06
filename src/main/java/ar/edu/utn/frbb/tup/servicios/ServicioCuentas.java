@@ -29,14 +29,14 @@ public class ServicioCuentas {
         cuentaDao.inicializarCuentas();
     }
 
-    public Cuenta buscarCuentas(Set<Cuenta> cuentas, String cbu){
-        for (Cuenta c : cuentas) {
-            if (c.getCbu() == Long.parseLong(cbu)) {
-                return c;
-            }
-        }
-        return null;
-    }
+//    public Cuenta buscarCuentas(Set<Cuenta> cuentas, String cbu){
+//        for (Cuenta c : cuentas) {
+//            if (c.getCbu() == Long.parseLong(cbu)) {
+//                return c;
+//            }
+//        }
+//        return null;
+//    }
 
     public void mostrarCuentas(List<Cliente> clientes) throws CuentasVaciasException {
         String dni;
@@ -132,160 +132,5 @@ public class ServicioCuentas {
         }
     }
 
-    public void consultarSaldo(List<Cliente> clientes) {
-        String dni;
-        do{
-            System.out.print("Ingrese el dni del cliente: ");
-            dni = entrada.nextLine();
-        } while (!validar.validarDni(dni));
 
-        Cliente cliente = buscar.buscarCliente(clientes, dni);
-        if (cliente == null) {
-            System.out.println("Cliente no encontrado, primero debe crearlo");
-        } else {
-            String cbu;
-            do {
-                System.out.print("Ingrese el CBU de la cuenta: ");
-                cbu = entrada.nextLine();
-            } while (!validarEntrada.esLong(cbu));
-
-            Cuenta cuenta = buscarCuentas(cliente.getCuentas(), cbu);
-            if (cuenta == null) {
-                System.out.println("Cuenta no encontrada");
-            } else {
-                System.out.println("Saldo de cuenta: " + cuenta.getSaldo());
-            }
-        }
-    }
-
-    public void realizarDeposito(List<Cliente> clientes) {
-        String dni;
-        do{
-            System.out.print("Ingrese el dni del cliente: ");
-            dni = entrada.nextLine();
-        } while (!validar.validarDni(dni));
-
-        Cliente cliente = buscar.buscarCliente(clientes, dni);
-        if (cliente == null) {
-            System.out.println("Cliente no encontrado, primero debe crearlo");
-        } else {
-            String cbu;
-            do {
-                System.out.print("Ingrese el CBU de la cuenta: ");
-                cbu = entrada.nextLine();
-            } while (!validarEntrada.esLong(cbu));
-
-            Cuenta cuenta = buscarCuentas(cliente.getCuentas(), cbu);
-            if (cuenta == null) {
-                System.out.println("Cuenta no encontrada");
-            } else {
-                System.out.print("Ingrese el monto a depositar: ");
-                double monto = entrada.nextDouble();
-                cuenta.setSaldo(monto);
-                System.out.println("Deposito realizado con exito");
-                System.out.println("Saldo de cuenta: " + cuenta.getSaldo());
-            }
-        }
-    }
-
-    public void realizarExtraccion(List<Cliente> clientes) {
-        String dni;
-        do{
-            System.out.print("Ingrese el DNI del cliente: ");
-            dni = entrada.nextLine();
-        } while (!validar.validarDni(dni));
-
-        Cliente cliente = buscar.buscarCliente(clientes, dni);
-        if (cliente == null) {
-            System.out.println("Cliente no encontrado, primero debe crearlo");
-        } else {
-            String cbu;
-            do {
-                System.out.print("Ingrese el CBU de la cuenta: ");
-                cbu = entrada.nextLine();
-            } while (!validarEntrada.esLong(cbu));
-            Cuenta cuenta = buscarCuentas(cliente.getCuentas(), cbu);
-            if (cuenta == null) {
-                System.out.println("Cuenta no encontrada");
-            } else {
-                String montoStr;
-                double monto;
-                do {
-                    System.out.print("Ingrese el monto a extraer: ");
-                    montoStr = entrada.nextLine();
-                } while (!validarEntrada.esDouble(montoStr));
-                monto = Double.parseDouble(montoStr);
-                if (cuenta.getSaldo() < monto) {
-                    System.out.println("Fondos insuficientes");
-                } else {
-                    cuenta.setSaldo(cuenta.getSaldo() - monto);
-                    System.out.println("Extraccion realizada con exito");
-                    System.out.println("Saldo de cuenta: " + cuenta.getSaldo());
-                }
-            }
-        }
-    }
-
-    public void realizarTransferencia(List<Cliente> clientes) {
-        String dniOrigen;
-        String dniDestino;
-        String cbuOrigen;
-        String cbuDestino;
-        String montoStr;
-
-        do{
-            System.out.print("Ingrese el DNI del cliente origen:  ");
-            dniOrigen = entrada.nextLine();
-        } while (!validar.validarDni(dniOrigen));
-
-        Cliente clienteOrigen = buscar.buscarCliente(clientes, dniOrigen);
-        if (clienteOrigen == null) {
-            System.out.println("Cliente origen no encontrado, primero debe crearlo");
-        }
-        else {
-
-            do {
-                System.out.print("Ingrese el CBU de la cuenta origen: ");
-                cbuOrigen = entrada.nextLine();
-            } while (!validarEntrada.esLong(cbuOrigen));
-            Cuenta cuentaOrigen = buscarCuentas(clienteOrigen.getCuentas(), cbuOrigen);
-            if (cuentaOrigen == null) {
-                System.out.println("Cuenta origen no encontrada");
-            } else {
-                do{
-                    System.out.print("Ingrese el DNI del cliente destino: ");
-                    dniDestino = entrada.nextLine();
-                } while (!validar.validarDni(dniDestino));
-                Cliente clienteDestino = buscar.buscarCliente(clientes, dniDestino);
-                if (clienteDestino == null) {
-                    System.out.println("Cliente destino no encontrado, primero debe crearlo");
-                } else {
-                    do {
-                        System.out.print("Ingrese el CBU de la cuenta destino: ");
-                        cbuDestino = entrada.nextLine();
-                    } while (!validarEntrada.esLong(cbuDestino) || !validar.validarCuentaDestino(cbuOrigen, cbuDestino));
-
-                    Cuenta cuentaDestino = buscarCuentas(clienteDestino.getCuentas(), cbuDestino);
-                    if (cuentaDestino == null) {
-                        System.out.println("Cuenta destino no encontrada");
-                    } else {
-                        double monto;
-                        do {
-                            System.out.print("Ingrese el monto a transferir: ");
-                            montoStr = entrada.nextLine();
-                        } while (!validarEntrada.esDouble(montoStr));
-                        monto = Double.parseDouble(montoStr);
-                        if (cuentaOrigen.getSaldo() < monto) {
-                            System.out.println("Fondos insuficientes en la cuenta origen");
-                        } else {
-                            cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - monto);
-                            cuentaDestino.setSaldo(cuentaDestino.getSaldo() + monto);
-                            System.out.println("Transferencia realizada con exito");
-                            System.out.println("Saldo cuenta origen: " + cuentaOrigen.getSaldo());
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
